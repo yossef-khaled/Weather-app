@@ -23,6 +23,19 @@ export default {
         '2rem': '2rem',
         '3rem': '3rem',
         '4rem': '4rem',
+      },
+      animation: {
+        shimmer: 'shimmer 5s both infinite alternate'
+      },
+      keyframes: {
+        shimmer: {
+          '0%': {
+            'background-position-x': '-1000px'
+          },
+          '100%': {
+            'background-position-x': '1000px'
+          }
+        },
       }
     },
   },
