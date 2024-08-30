@@ -8,7 +8,9 @@ export default {
     extend: {
       colors: {
         'primary-color': '#0e2648',
-        'secondary-color': '#2a497b'
+        'secondary-color': '#2a497b',
+        'light-gray': '#f2f3f5',
+        'medium-gray': '#6f7681'
       },
       padding: {
         '1rem': '1rem',
