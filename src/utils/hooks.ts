@@ -1,9 +1,14 @@
+import {useState} from 'react';
 
-/**
- * 
- * @param onSuccess A setState function to set location coordinates on success
- * @param onFailure A setState function to set error on failure
- */
-export const useGeoLocation = (onSuccess: (coords: GeolocationCoordinates) => void, onFailure: (error: GeolocationPositionError) => void) => {
-    navigator.geolocation.getCurrentPosition((position) => onSuccess(position.coords), onFailure);
+export const useGeoLocationCords = () => {
+    const [coords, setCoords] = useState<GeolocationCoordinates>();
+    const [error, setError] = useState<GeolocationPositionError | null>(null);
+    
+    if(!coords && !error) {
+        navigator.geolocation.getCurrentPosition((position) => setCoords(position.coords), (e) => setError(e));
+    }
+    else if(coords && error) {
+        setError(null);
+    }
+    return {coords, error}
 }
