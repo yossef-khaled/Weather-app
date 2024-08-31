@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
-import CityWeather from './components/CityWeather.tsx';
+import CityWeather from './pages/city-weather';
 import App from './App.tsx';
 
 const router = createBrowserRouter([
