@@ -50,3 +50,5 @@ export const SECONDARY_WEATHER_HOURLY_ELEMENTS: WeatherConditionElement[] = [
         scale: '%'
     }, 
 ]
+
+export const HOURLY_SAMPLES__STEP = 100;
