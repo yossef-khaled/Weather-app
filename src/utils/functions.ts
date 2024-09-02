@@ -6,6 +6,15 @@ type MockFetcherResponse = {
     error: {message: string} | null
 }
 
+export type AxisDimensions = {
+    width: number;
+    height?: number;
+    marginTop?: number
+    marginRight?: number
+    marginBottom?: number
+    marginLeft?: number
+}
+
 export const fetcher = async (url: string) => {
     if(!url) return;
     const res = await fetch(url).then(res => res.json())
@@ -42,6 +51,27 @@ export const extractTimeFromLocalDateTime = (localDateTime: string) => {
     
     const timeInHmm = time.replace(':', '');
     return timeInHmm;
+}
+
+export const formatAPITime = (time: string) => {
+    if(time.length <= 2) time = time.concat('00')
+    return time.slice(0, time.length - 2) + ':' + time.slice(time.length - 2, time.length)
+}
+
+export const combineChartDimensions = (dimensions: AxisDimensions) => {
+    const parsedDimensions = {
+        ...dimensions,
+        marginTop: dimensions.marginTop || 0,
+        marginRight: dimensions.marginRight || 0,
+        marginBottom: dimensions.marginBottom || 0,
+        marginLeft: dimensions.marginLeft || 0,
+    }
+
+    return {
+        ...parsedDimensions,
+        boundedHeight: parsedDimensions.height ? Math.max(parsedDimensions.height - parsedDimensions.marginTop - parsedDimensions.marginBottom, 0) : 0,
+        boundedWidth: Math.max(+parsedDimensions.width - parsedDimensions.marginLeft - parsedDimensions.marginRight, 0),
+    }
 }
 
 // export const mockFetcher = async (url: string | null, isSuccessful: boolean = false, resTime: number = 1000) => {
