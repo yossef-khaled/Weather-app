@@ -10,21 +10,23 @@ interface TemperatureDetailsProps {
 
 const TemperatureDetails = ({current, max, min, scale}: TemperatureDetailsProps) => {
     return (
-        <div className="flex justify-between items-center mt-2rem">
-            <div className="text-6xl font-bold">
+        <div className="flex flex-wrap justify-between text-center items-center mt-2rem">
+            <div className="text-6xl font-bold basis-2/3">
                 <Temperature
                     temperature={current}
                     scale={scale}
                 />
             </div>
-            <div className="flex flex-col text-3xl gap-y-5">
+            <div className="flex lg:flex-col text-2xl gap-5">
                 <TemperatureLimit
                     temperature={max}
                     scale={scale}
+                    isMin={false}
                 />
                 <TemperatureLimit
                     temperature={min}
                     scale={scale}
+                    isMin
                 />
             </div>
         </div>

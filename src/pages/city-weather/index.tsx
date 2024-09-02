@@ -30,11 +30,11 @@ const CityWeather = () => {
     const startedLoading = isLoadingData || !!error || !!fetchRes; // Retrieving coords takes a while at the beginning  as it is setting a state. So, isLoading is false still, it did not even start yet.
 
     const currentTime = !isLoadingData && fetchRes ? extractTimeFromLocalDateTime(fetchRes.data.time_zone[0].localtime) : null;
-    const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= parseInt(hourlyObj.time) - parseInt(currentTime) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
+    const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= Math.abs(parseInt(hourlyObj.time) - parseInt(currentTime)) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
 
     return(
-        <main className='w-full h-screen grid grid-cols-[2fr_3fr]'>
-            <section className="bg-primary-color p-2rem h-full">
+        <main className='w-full h-screen grid lg:grid-cols-[2fr_3fr] auto-rows-max lg:grid-rows-[1fr]'>
+            <section className="bg-primary-color p-2rem lg:h-full">
                 {!startedLoading || isLoadingData ?
                     <WeatherSummaryShimmer/>
                     :

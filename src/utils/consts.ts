@@ -1,34 +1,61 @@
+import {faTemperatureThreeQuarters, faWind, faCloudRain, faWater, faSun, faCloudSun, faDroplet, IconDefinition} from '@fortawesome/free-solid-svg-icons'
+
 type WeatherConditionElement = {
     key: string;
     title: string;
     scale: string;
+    icon: {
+        src: IconDefinition;
+        tailwindClasses?: string;
+    };
 }
 
 export const MAIN_WEATHER_HOURLY_ELEMENTS: WeatherConditionElement[] = [
     {
         key: 'tempC',
         title: 'Temperature in celsius',
-        scale: 'C'
+        scale: 'C',
+        icon: {
+            src: faTemperatureThreeQuarters,
+            tailwindClasses: 'text-red-400' 
+        }
     },
     {
         key: 'windspeedKmph',
         title: 'Wind speed',
-        scale: 'Km/h'
+        scale: 'Km/h',
+        icon: {
+            src: faWind,
+            tailwindClasses: 'text-blue-400' 
+        }
     },
     {
         key: 'pressure',
         title: 'Pressure',
-        scale: 'mb'
+        scale: 'mb',
+        icon: {
+            src: faWater,
+            tailwindClasses: 'text-blue-400' 
+        }
+        
     },
     {
         key: 'chanceofrain',
         title: 'Rain chance',
-        scale: '%'
+        scale: '%',
+        icon: {
+            src: faCloudRain,
+            tailwindClasses: 'text-blue-400'
+        }
     },
     {
         key: 'uvIndex',
         title: 'Uv index',
-        scale: '%'
+        scale: '%',
+        icon: {
+            src: faSun,
+            tailwindClasses: 'text-yellow-400'
+        }
     },
 
 ]
@@ -37,17 +64,30 @@ export const SECONDARY_WEATHER_HOURLY_ELEMENTS: WeatherConditionElement[] = [
     {
         key: 'tempF',
         title: 'Temperature in Fahrenheit',
-        scale: 'F'
+        scale: 'F',
+        icon: {
+            src: faTemperatureThreeQuarters,
+            tailwindClasses: '' 
+        }
     }, 
     {
         key: 'cloudcover',
         title: 'Cloud cover',
-        scale: '%'
+        scale: '%',
+        
+        icon: {
+            src: faCloudSun,
+            tailwindClasses: '' 
+        }
     },
     {
         key: 'humidity',
         title: 'Humidity',
-        scale: '%'
+        scale: '%',
+        icon: {
+            src: faDroplet,
+            tailwindClasses: ''
+        }
     }, 
 ]
 
