@@ -1,14 +1,18 @@
 import useSWR from 'swr';
 import WeatherSummary from '../../components/weather-summary';
-import { HOURLY_SAMPLES__STEP, MAIN_WEATHER_HOURLY_ELEMENTS } from '../../utils/consts';
+import { HOURLY_SAMPLES_STEP, WEATHER_SAMPLES_ENDING_HOUR, WEATHER_SAMPLES_STARTING_HOUR } from '../../utils/consts';
 import { useGeoLocationCords } from '../../utils/hooks';
 import Card from '../../widgets/Card'
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
-import { DUMMY_DATA } from '../../utils/dummy-data';
-import Shimmer from '../../widgets/BaseShimmer';
 import WeatherElements from '../../components/weather-elements';
 import WeatherElementsShimmer from '../../components/weather-elements/Shimmer';
 import WeatherSummaryShimmer from '../../components/weather-summary/Shimmer';
+import WeatherChart from '../../components/weather-chart';
+
+type WeatherHourlySample = {
+    time: string;
+    tempC: string;
+}
 
 const CityWeather = () => {
 
@@ -26,7 +30,7 @@ const CityWeather = () => {
     const startedLoading = isLoadingData || !!error || !!fetchRes; // Retrieving coords takes a while at the beginning  as it is setting a state. So, isLoading is false still, it did not even start yet.
 
     const currentTime = !isLoadingData && fetchRes ? extractTimeFromLocalDateTime(fetchRes.data.time_zone[0].localtime) : null;
-    const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: any) => 0 <= parseInt(hourlyObj.time) - parseInt(currentTime) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES__STEP) : null
+    const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= parseInt(hourlyObj.time) - parseInt(currentTime) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
 
     return(
         <main className='w-full h-screen grid grid-cols-[2fr_3fr]'>
@@ -48,13 +52,23 @@ const CityWeather = () => {
                 }
 
             </section>
-            <div className='m-0 h-max flex flex-wrap justify-around gap-y-4 p-2rem'>
-                { !startedLoading || isLoadingData ?
+            <div id='weather-elements-wrapper' className='m-0 h-max flex flex-wrap justify-between gap-y-4 p-2rem'>
+                {!startedLoading || isLoadingData ?
                     <WeatherElementsShimmer/>
                 :
+                <>
                     <WeatherElements
                         weather={currentHourData}
                     />
+                    <Card classNames='bg-light-gray p-1rem text-center'>
+                        <span className='font-bold m-auto text-primary-color text-xl'>Temperature throughout the day</span>
+                        <WeatherChart
+                            data={fetchRes.data.weather[0].hourly.map((hourlyObj: WeatherHourlySample) => {return {time: hourlyObj.time, temperature: parseInt(hourlyObj.tempC)}})}
+                            xScaleDomain={[WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR]}
+                            width={document.querySelector('#weather-elements-wrapper')!.scrollWidth}
+                        />
+                    </Card>
+                </>
                 }
             </div>
         </main>
