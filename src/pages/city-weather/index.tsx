@@ -4,7 +4,7 @@ import { HOURLY_SAMPLES_STEP, WEATHER_SAMPLES_ENDING_HOUR, WEATHER_SAMPLES_START
 import { useParams } from "react-router-dom";
 import Card from '../../widgets/Card'
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
-import WeatherElements from '../../components/city-weather-elements';
+import CityWeatherElements from '../../components/city-weather-elements';
 import WeatherElementsShimmer from '../../components/city-weather-elements/Shimmer';
 import WeatherSummaryShimmer from '../../components/city-weather-summary/Shimmer';
 import WeatherChart from '../../components/weather-chart';
@@ -52,7 +52,7 @@ const CityWeather = () => {
                     <WeatherElementsShimmer/>
                 :
                 <>
-                    <WeatherElements
+                    <CityWeatherElements
                         weather={currentHourData}
                     />
                     <Card classNames='bg-light-gray p-1rem text-center'>

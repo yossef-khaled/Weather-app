@@ -6,7 +6,7 @@ interface WeatherElementsProps {
     weather: any;
 }
 
-const WeatherElements = ({weather}: WeatherElementsProps) => {
+const CityWeatherElements = ({weather}: WeatherElementsProps) => {
     return (
         <div className='grid grid-cols-1 sm:grid-cols-[1fr_1fr] w-full'>
             {MAIN_WEATHER_HOURLY_ELEMENTS.filter((MAIN_WEATHER_HOURLY_ELEMENT) => !MAIN_WEATHER_HOURLY_ELEMENT.key.includes('temp')).map((MAIN_WEATHER_HOURLY_ELEMENT, i) => (
@@ -22,4 +22,4 @@ const WeatherElements = ({weather}: WeatherElementsProps) => {
     )
 }
 
-export default WeatherElements;
+export default CityWeatherElements;
