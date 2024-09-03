@@ -4,7 +4,7 @@ import TemperatureDetails from "../TemperatureDetails";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faSun, faMoon} from '@fortawesome/free-solid-svg-icons'
 
-interface WeatherSummaryProps {
+export interface WeatherSummaryProps {
     city: string;
     country: string;
     state?: string;
