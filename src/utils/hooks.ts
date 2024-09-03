@@ -2,19 +2,31 @@ import { useState, useRef, useEffect } from "react";
 import {ResizeObserver} from "@juggle/resize-observer";
 import { AxisDimensions, combineChartDimensions } from "./functions";
 
+interface UserLocation extends GeolocationPosition {
+    capital: string;
+}
+
 export const useGeoLocationCords = () => {
-  const [coords, setCoords] = useState<GeolocationCoordinates>();
+  const [position, setPosition] = useState<UserLocation>();
   const [error, setError] = useState<GeolocationPositionError | null>(null);
 
-  if (!coords && !error) {
+  if (!position && !error) {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     navigator.geolocation.getCurrentPosition(
-      (position) => setCoords(position.coords),
+      (geoLocationPosition) => {
+        console.log(geoLocationPosition)
+        setPosition({
+        coords: geoLocationPosition.coords,
+        timestamp: geoLocationPosition.timestamp,
+        capital: timeZone.split('/')[1]
+    })},
       (e) => setError(e)
     );
-  } else if (coords && error) {
+  } else if (position && error) {
     setError(null);
   }
-  return { coords, error };
+  return { position, error };
 };
 
 export const useChartDimensions = (passedSettings: AxisDimensions) => {
