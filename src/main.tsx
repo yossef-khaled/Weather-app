@@ -7,16 +7,20 @@ import {
 import './index.css'
 import CityWeather from './pages/city-weather';
 import App from './App.tsx';
+import Home from './pages/home/index.tsx';
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App/>,
     children: [
       {
-        path: "/cities/:city",
+        path: "/cities/:cityName",
         element: <CityWeather />,
       },
+      {
+        path: "/",
+        element: <Home/>,
+      }
     ],
     // TODO: Error element
   },
