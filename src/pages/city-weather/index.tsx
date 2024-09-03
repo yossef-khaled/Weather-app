@@ -1,12 +1,12 @@
 import useSWR from 'swr';
-import WeatherSummary from '../../components/weather-summary';
+import WeatherSummary from '../../components/city-weather-summary';
 import { HOURLY_SAMPLES_STEP, WEATHER_SAMPLES_ENDING_HOUR, WEATHER_SAMPLES_STARTING_HOUR } from '../../utils/consts';
-import { useGeoLocationCords } from '../../utils/hooks';
+import { useParams } from "react-router-dom";
 import Card from '../../widgets/Card'
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
-import WeatherElements from '../../components/weather-elements';
-import WeatherElementsShimmer from '../../components/weather-elements/Shimmer';
-import WeatherSummaryShimmer from '../../components/weather-summary/Shimmer';
+import WeatherElements from '../../components/city-weather-elements';
+import WeatherElementsShimmer from '../../components/city-weather-elements/Shimmer';
+import WeatherSummaryShimmer from '../../components/city-weather-summary/Shimmer';
 import WeatherChart from '../../components/weather-chart';
 
 type WeatherHourlySample = {
@@ -16,18 +16,13 @@ type WeatherHourlySample = {
 
 const CityWeather = () => {
 
-    const {coords, error: geoLocationError} = useGeoLocationCords();
-    const isSettingCoords = !coords && !geoLocationError;
+    const { cityName } = useParams();
 
-    if(geoLocationError && !coords) {
-        // TO DO: Create an error component
-        return <div>{geoLocationError.message}</div>
+    const { data: fetchRes, error, isLoading: isLoadingData } = useSWR(`${import.meta.env.VITE_LOCAL_WEATHER_END_POINT}?key=${import.meta.env.VITE_API_KEY}&q=${cityName}&num_of_days=1&tp=1&format=json&includelocation=yes&showlocaltime=yes`, fetcher)
+
+    if(error) {
+        // TODO: show error
     }
-
-    const shouldFetch = !isSettingCoords;
-
-    const { data: fetchRes, error, isLoading: isLoadingData } = useSWR(shouldFetch ? `${import.meta.env.VITE_LOCAL_WEATHER_END_POINT}?key=${import.meta.env.VITE_API_KEY}&q=${coords?.latitude},${coords?.longitude}&num_of_days=1&tp=1&format=json&includelocation=yes&showlocaltime=yes` : null, fetcher)
-    const startedLoading = isLoadingData || !!error || !!fetchRes; // Retrieving coords takes a while at the beginning  as it is setting a state. So, isLoading is false still, it did not even start yet.
 
     const currentTime = !isLoadingData && fetchRes ? extractTimeFromLocalDateTime(fetchRes.data.time_zone[0].localtime) : null;
     const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= Math.abs(parseInt(hourlyObj.time) - parseInt(currentTime)) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
@@ -35,7 +30,7 @@ const CityWeather = () => {
     return(
         <main className='w-full h-screen grid lg:grid-cols-[2fr_3fr] auto-rows-max lg:grid-rows-[1fr]'>
             <section className="bg-primary-color p-2rem lg:h-full">
-                {!startedLoading || isLoadingData ?
+                {isLoadingData ?
                     <WeatherSummaryShimmer/>
                     :
                     <WeatherSummary
@@ -53,7 +48,7 @@ const CityWeather = () => {
 
             </section>
             <div id='weather-elements-wrapper' className='m-0 h-max flex flex-wrap justify-between gap-y-4 p-2rem'>
-                {!startedLoading || isLoadingData ?
+                {isLoadingData ?
                     <WeatherElementsShimmer/>
                 :
                 <>
