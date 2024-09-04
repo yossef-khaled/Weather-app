@@ -1,4 +1,4 @@
-import {faTemperatureThreeQuarters, faWind, faCloudRain, faWater, faSun, faCloudSun, faDroplet, IconDefinition} from '@fortawesome/free-solid-svg-icons'
+import {faTemperatureThreeQuarters, faBolt, faSnowflake, faCloud, faWind, faEye, faCloudRain, faWater, faSun, faCloudSun, faDroplet, IconDefinition} from '@fortawesome/free-solid-svg-icons'
 
 type WeatherConditionElement = {
     key: string;
@@ -77,7 +77,7 @@ export const SECONDARY_WEATHER_HOURLY_ELEMENTS: WeatherConditionElement[] = [
         
         icon: {
             src: faCloudSun,
-            tailwindClasses: '' 
+            tailwindClasses: 'text-yellow-400' 
         }
     },
     {
@@ -86,9 +86,45 @@ export const SECONDARY_WEATHER_HOURLY_ELEMENTS: WeatherConditionElement[] = [
         scale: '%',
         icon: {
             src: faDroplet,
-            tailwindClasses: ''
+            tailwindClasses: 'text-blue-400'
         }
-    }, 
+    },
+    {
+        key: 'visibility',
+        title: 'Visibility',
+        scale: 'Km',
+        icon: {
+            src: faEye,
+            tailwindClasses: 'text-blue-400'
+        }
+    },
+    {
+        key: 'chanceoffog',
+        title: 'Chance of fog',
+        scale: '%',
+        icon: {
+            src: faCloud,
+            tailwindClasses: 'text-blue-400'
+        }
+    },
+    {
+        key: 'chanceofsnow',
+        title: 'Chance of snow',
+        scale: '%',
+        icon: {
+            src: faSnowflake,
+            tailwindClasses: 'text-white'
+        }
+    },
+    {
+        key: 'chanceofthunder',
+        title: 'Chance of thunder',
+        scale: '%',
+        icon: {
+            src: faBolt,
+            tailwindClasses: 'text-yellow-500'
+        }
+    },
 ]
 
 export const HOURLY_SAMPLES_STEP = 100;
