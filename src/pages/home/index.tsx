@@ -24,14 +24,14 @@ const Home = () => {
 
     const shouldFetch = !isSettingGeoLocation;
 
-    const { data: fetchRes, error, isLoading: isLoadingData } = useSWR(shouldFetch ? `${import.meta.env.VITE_LOCAL_WEATHER_END_POINT}?key=${import.meta.env.VITE_API_KEY}&q=${position?.capital}&num_of_days=1&tp=1&format=json&includelocation=yes&showlocaltime=yes` : null, fetcher)
+    const { data: fetchRes, error, isLoading: isLoadingData } = useSWR(shouldFetch ? `${import.meta.env.VITE_LOCAL_WEATHER_END_POINT}?key=${import.meta.env.VITE_API_KEY}&q=${position?.capital}&num_of_days=1&tp=1&format=json&includelocation=yes&showlocaltime=yes&alerts=yes` : null, fetcher)
     const startedLoading = isLoadingData || !!error || !!fetchRes; // Retrieving coords takes a while at the beginning  as it is setting a state. So, isLoading is false still, it did not even start yet.
 
     const currentTime = !isLoadingData && fetchRes ? extractTimeFromLocalDateTime(fetchRes.data.time_zone[0].localtime) : null;
     const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= Math.abs(parseInt(hourlyObj.time) - parseInt(currentTime)) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
 
     return(
-        <main className='bg-primary-color h-screen flex flex-col justify-start items-center text-center pt-28'>
+        <main className='bg-primary-color h-screen flex flex-col justify-start items-center text-center pt-20'>
             {!startedLoading || isLoadingData ?
                     <WeatherSummaryShimmer/>
                     :
@@ -52,8 +52,9 @@ const Home = () => {
                 :
                     <CountryWeatherElements
                         weather={currentHourData}
+                        alertMessage={fetchRes.data.alerts.alert[0]?.desc}
                     />
-                }
+            }
         </main>
     )
 }
