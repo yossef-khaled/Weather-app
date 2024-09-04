@@ -7,7 +7,7 @@ const CountryName = ({city, country}: CountryNameProps) => {
     return (
         <div className="flex flex-col">
             <span className="text-6xl">{country}</span>
-            <span>Capital: {city}</span>
+            <span>{city}</span>
         </div>
     )
 }
