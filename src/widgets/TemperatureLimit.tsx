@@ -6,6 +6,7 @@ interface TemperatureLimitProps {
     temperature: number | string;
     scale: string;
     isMin: boolean;
+    classNames?: string;
 }
 
 const ICON_STYLES = {
@@ -19,10 +20,10 @@ const ICON_STYLES = {
     }
 }
 
-const TemperatureLimit = ({temperature, scale, isMin}: TemperatureLimitProps) => {
+const TemperatureLimit = ({temperature, scale, isMin, classNames}: TemperatureLimitProps) => {
     const tempStyle = isMin ? ICON_STYLES.min : ICON_STYLES.max
     return (
-        <span className="flex justify-between items-center text-md font-bold min-w-max">
+        <span className={`flex justify-between items-center text-md font-bold min-w-max ${classNames}`}>
             <Temperature
                 temperature={temperature}
                 scale={scale}
