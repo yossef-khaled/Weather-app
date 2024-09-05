@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Dispatch } from "react";
 import {ResizeObserver} from "@juggle/resize-observer";
 import { AxisDimensions, combineChartDimensions } from "./functions";
 
@@ -65,3 +65,17 @@ export const useChartDimensions = (passedSettings: AxisDimensions) => {
 
     return {ref, newSettings};
 };
+
+export const useDebounce = (
+    text: string,
+    setText: (text: string) => void | Dispatch<React.SetStateAction<string>>
+) => {
+
+    useEffect(() => {
+        const timeoutID = setTimeout(() => {
+            setText(text)
+        }, 800)
+        return () => clearTimeout(timeoutID);
+    }, [text])
+
+}
