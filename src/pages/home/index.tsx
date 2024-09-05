@@ -6,13 +6,28 @@ import CountryWeatherSummary from '../../components/country-weather-summary';
 import WeatherSummaryShimmer from '../../components/city-weather-summary/Shimmer';
 import WeatherElementsShimmer from '../../components/city-weather-elements/Shimmer';
 import CountryWeatherElements from '../../components/country-weather-elements';
+import DebounceSearchInput from '../../widgets/DebounceSearchInput';
+import { useState } from 'react';
+import CountryWeatherSummaryShimmer from '../../components/country-weather-summary/Shimmer';
+import CountryWeatherElementsShimmer from '../../components/country-weather-elements/Shimmer';
 
 type WeatherHourlySample = {
     time: string;
     tempC: string;
 }
 
+type APISearchResult = {
+    areaName: {value: string}[];
+    country: {value: string}[];
+    latitude: string;
+    longitude: string,
+    population: string,
+    "weatherUrl": {value: string}[];
+}
+
 const Home = () => {
+
+    const [cityName, setCityName] = useState('');
 
     const {position, error: geoLocationError} = useGeoLocationCords();
     const isSettingGeoLocation = !position && !geoLocationError;
@@ -30,10 +45,30 @@ const Home = () => {
     const currentTime = !isLoadingData && fetchRes ? extractTimeFromLocalDateTime(fetchRes.data.time_zone[0].localtime) : null;
     const currentHourData = currentTime ? fetchRes.data.weather[0].hourly.find((hourlyObj: WeatherHourlySample) => 0 <= Math.abs(parseInt(hourlyObj.time) - parseInt(currentTime)) && parseInt(hourlyObj.time) - parseInt(currentTime) < HOURLY_SAMPLES_STEP) : null
 
+    const SEARCH_CITY_QUERY_PARAMETER = !cityName ? null : `${cityName}`
+
+    const { data: searchCitiesRes, error: searchCitiesError, isLoading: isLoadingSearchCities } = useSWR(SEARCH_CITY_QUERY_PARAMETER ? `${import.meta.env.VITE_SEARCH_END_POINT}?key=${import.meta.env.VITE_API_KEY}&q=${SEARCH_CITY_QUERY_PARAMETER}&format=json` : null, fetcher)
+
+    const viewCityWeather = (cityName: string) => {
+        location.href = `/cities/${cityName}`
+    }
+
     return(
-        <main className='bg-primary-color h-screen flex flex-col justify-start items-center text-center pt-20'>
+        <main className='bg-primary-color h-screen flex flex-col justify-start items-center text-center pt-8'>
+            <DebounceSearchInput
+                textAlreadyWritten={cityName}
+                setText={setCityName}
+                searchResults={searchCitiesRes?.search_api ? searchCitiesRes?.search_api.result.map((r: APISearchResult) => {
+                    return {
+                        value: r.areaName[0].value,
+                        label: `${r.areaName[0].value}, ${r.country[0].value}`
+                    }
+                }) : []}
+                isLoading={isLoadingSearchCities}
+                onSelectSearchOption={viewCityWeather}
+            />
             {!startedLoading || isLoadingData ?
-                    <WeatherSummaryShimmer/>
+                    <CountryWeatherSummaryShimmer/>
                     :
                     <CountryWeatherSummary
                         city={fetchRes.data.nearest_area[0].areaName[0].value}
@@ -48,7 +83,7 @@ const Home = () => {
                     />
             }
             {!startedLoading || isLoadingData ?
-                    <WeatherElementsShimmer/>
+                    <CountryWeatherElementsShimmer/>
                 :
                     <CountryWeatherElements
                         weather={currentHourData}
