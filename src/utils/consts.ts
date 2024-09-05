@@ -134,3 +134,18 @@ export const WEATHER_SAMPLES_ENDING_HOUR = 2300
 export const PRIMARY_COLOR = '#0e2648'
 export const MEDIUM_GRAY = "#6f7681"
 export const CHART_LINE_WIDTH = 3;
+
+export const KEYBOARD_KEYS = [
+    {
+        key: 'enter',
+        code: 'Enter'
+    },
+    {
+        key: 'arrowUp',
+        code: "ArrowUp"
+    },
+    {
+        key: 'arrowDown',
+        code: "ArrowDown"
+    },
+]
