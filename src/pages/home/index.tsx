@@ -3,8 +3,6 @@ import { HOURLY_SAMPLES_STEP } from '../../utils/consts';
 import { useGeoLocationCords } from '../../utils/hooks';
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
 import CountryWeatherSummary from '../../components/country-weather-summary';
-import WeatherSummaryShimmer from '../../components/city-weather-summary/Shimmer';
-import WeatherElementsShimmer from '../../components/city-weather-elements/Shimmer';
 import CountryWeatherElements from '../../components/country-weather-elements';
 import DebounceSearchInput from '../../widgets/DebounceSearchInput';
 import { useState } from 'react';
@@ -54,7 +52,7 @@ const Home = () => {
     }
 
     return(
-        <main className='bg-primary-color h-screen flex flex-col justify-start items-center text-center pt-8'>
+        <main className='bg-primary-color h-max min-h-screen flex flex-col justify-start items-center text-center pt-8 p-4 mb-16'>
             <DebounceSearchInput
                 textAlreadyWritten={cityName}
                 setText={setCityName}
