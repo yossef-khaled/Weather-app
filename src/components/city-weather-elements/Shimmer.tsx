@@ -9,6 +9,7 @@ const WeatherElementsShimmer = () => {
                     width="basis-5/12"
                     height="h-20"
                     classNames={"opacity-30"}
+                    key={MAIN_WEATHER_HOURLY_ELEMENT.key}
                 />
             ))}
         </>
