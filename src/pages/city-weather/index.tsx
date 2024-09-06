@@ -76,7 +76,7 @@ const CityWeather = () => {
                                     width={document.querySelector('#weather-elements-wrapper')!.clientWidth}
                                     margin={50}
                                 />
-                                : <span className='text-primary-color'>No data was found</span>
+                                : <span className='text-primary-color pb-2rem'>No data was found</span>
                             }
                         </div>
                     </>
