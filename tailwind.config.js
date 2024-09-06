@@ -13,6 +13,7 @@ export default {
         'medium-gray': '#6f7681'
       },
       padding: {
+        '0rem': '0',
         '1rem': '1rem',
         '2rem': '2rem',
         '3rem': '3rem',
