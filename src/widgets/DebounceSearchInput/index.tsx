@@ -22,8 +22,6 @@ interface DebounceInputProps {
 const DebounceSearchInput = ({textAlreadyWritten, setText, searchResults, onSelectSearchOption, isLoading, placeholder = "Search location here"}: DebounceInputProps) => {
     const [inputText, setInputText] = useState(textAlreadyWritten ?? '');
 
-    console.log(searchResults)
-
     useDebounce(inputText, setText);
 
     const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {

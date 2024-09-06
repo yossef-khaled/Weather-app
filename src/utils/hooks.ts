@@ -14,13 +14,11 @@ export const useGeoLocationCords = () => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     navigator.geolocation.getCurrentPosition(
-      (geoLocationPosition) => {
-        console.log(geoLocationPosition)
-        setPosition({
+      (geoLocationPosition) => setPosition({
         coords: geoLocationPosition.coords,
         timestamp: geoLocationPosition.timestamp,
         capital: timeZone.split('/')[1]
-    })},
+    }),
       (e) => setError(e)
     );
   } else if (position && error) {
