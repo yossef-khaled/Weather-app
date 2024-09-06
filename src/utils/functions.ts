@@ -8,11 +8,8 @@ type MockFetcherResponse = {
 
 export type AxisDimensions = {
     width: number;
-    height?: number;
-    marginTop?: number
-    marginRight?: number
-    marginBottom?: number
-    marginLeft?: number
+    height: number;
+    margin: number;
 }
 
 export const fetcher = async (url: string) => {
@@ -61,16 +58,13 @@ export const formatAPITime = (time: string) => {
 export const combineChartDimensions = (dimensions: AxisDimensions) => {
     const parsedDimensions = {
         ...dimensions,
-        marginTop: dimensions.marginTop || 0,
-        marginRight: dimensions.marginRight || 0,
-        marginBottom: dimensions.marginBottom || 0,
-        marginLeft: dimensions.marginLeft || 0,
+        margin: dimensions.margin 
     }
 
     return {
         ...parsedDimensions,
-        boundedHeight: parsedDimensions.height ? Math.max(parsedDimensions.height - parsedDimensions.marginTop - parsedDimensions.marginBottom, 0) : 0,
-        boundedWidth: Math.max(+parsedDimensions.width - parsedDimensions.marginLeft - parsedDimensions.marginRight, 0),
+        boundedHeight: Math.max(parsedDimensions.height - (2 * parsedDimensions.margin), 0),
+        boundedWidth: Math.max(+parsedDimensions.width - (2 * parsedDimensions.margin), 0),
     }
 }
 
