@@ -8,6 +8,7 @@ import './index.css'
 import CityWeather from './pages/city-weather';
 import App from './App.tsx';
 import Home from './pages/home/index.tsx';
+import ErrorPage from './pages/error/index.tsx';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <Home/>,
       }
     ],
-    // TODO: Error element
+    errorElement: <ErrorPage/>
   },
   {
 
