@@ -28,9 +28,9 @@ const DebounceSearchInput = ({textAlreadyWritten, setText, searchResults, onSele
         setInputText(e.target.value);
     }
 
-    const onSelectResult = () => {
+    const onSelectResult = (selectedElement?: HTMLElement) => {
         const searchResultElements = Array.from(document.querySelectorAll('.search-result'))
-        const selectedSearchElement = searchResultElements.find((searchResultElement) => (searchResultElement as HTMLElement).dataset.isCurrentStation === "true")
+        const selectedSearchElement = selectedElement ?? searchResultElements.find((searchResultElement) => (searchResultElement as HTMLElement).dataset.isCurrentStation === "true")
 
         onSelectSearchOption(selectedSearchElement? selectedSearchElement.innerHTML : inputText);
     }
@@ -97,7 +97,7 @@ const DebounceSearchInput = ({textAlreadyWritten, setText, searchResults, onSele
                 textAlreadyWritten ? 
                     <div className='w-full absolute max-h-48 overflow-y-auto bg-white rounded text-left text-primary-color mt-1'>
                         {searchResults.length ?
-                                searchResults?.map((result, i) => <span onMouseEnter={() => onHoverOnElement()} key={result.value} data-is-current-station={"false"} data-index={i} className='p-2 block search-result'>
+                                searchResults?.map((result, i) => <span onClick={(e) => onSelectResult(e.target as HTMLElement)} onMouseEnter={() => onHoverOnElement()} key={result.value} data-is-current-station={"false"} data-index={i} className='p-2 block search-result'>
                                     {result.label}
                                 </span>)
                             : <span className='p-2 block'>
