@@ -24,7 +24,6 @@ function drawChart(
   dimensions: BoundedDimensions,
   data: WeatherSample[]
 ) {
-    console.log(dimensions)
   
     const svg = d3.select(svgRef.current);
     const height = dimensions.height ?? 500;
