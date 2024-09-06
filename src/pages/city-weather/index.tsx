@@ -47,7 +47,7 @@ const CityWeather = () => {
                 }
 
             </section>
-            <div id='weather-elements-wrapper' className='m-0 h-max flex flex-wrap justify-between gap-y-4 p-2rem'>
+            <div id='weather-elements-wrapper' className='m-0 h-max flex flex-wrap justify-between gap-y-4 p-1rem'>
                 {isLoadingData ?
                     <WeatherElementsShimmer/>
                 :
@@ -55,12 +55,13 @@ const CityWeather = () => {
                     <CityWeatherElements
                         weather={currentHourData}
                     />
-                    <Card classNames='bg-light-gray p-1rem text-center'>
-                        <span className='font-bold m-auto text-primary-color text-xl'>Temperature throughout the day</span>
+                    <Card classNames='bg-light-gray p-0rem text-center w-full weather-elements-wrapper flex flex-col'>
+                        <span className='font-bold m-4 text-primary-color text-xl'>Temperature throughout the day</span>
                         <WeatherChart
                             data={fetchRes.data.weather[0].hourly.map((hourlyObj: WeatherHourlySample) => {return {time: hourlyObj.time, temperature: parseInt(hourlyObj.tempC)}})}
                             xScaleDomain={[WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR]}
-                            width={document.querySelector('#weather-elements-wrapper')!.scrollWidth}
+                            width={document.querySelector('#weather-elements-wrapper')!.clientWidth}
+                            margin={50}
                         />
                     </Card>
                 </>

@@ -7,21 +7,28 @@ import {
   HOURLY_SAMPLES_STEP,
   MEDIUM_GRAY,
   PRIMARY_COLOR,
+  TEMPERATURE_CHART_ANIMATION_DURATION,
+  TEMPERATURE_CHART_ANIMATION_STAGGER,
+  TEMPERATURE_CHART_Y_AXIS_STEPS,
   WEATHER_SAMPLES_ENDING_HOUR,
   WEATHER_SAMPLES_STARTING_HOUR,
 } from "../../utils/consts";
 
+type BoundedDimensions = AxisDimensions & {
+    boundedWidth: number;
+    boundedHeight: number;
+}
+
 function drawChart(
   svgRef: React.RefObject<SVGSVGElement>,
-  dimensions: AxisDimensions,
+  dimensions: BoundedDimensions,
   data: WeatherSample[]
 ) {
+    console.log(dimensions)
   
     const svg = d3.select(svgRef.current);
-    const width = dimensions.width;
     const height = dimensions.height ?? 500;
-    const margin = 50;
-    const duration = 250;
+    const margin = dimensions.margin;
 
     /* Scale */
 
@@ -29,20 +36,20 @@ function drawChart(
     const xScale = d3
         .scaleLinear()
         .domain([WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR])
-        .range([0, width - margin]);
+        .range([0, dimensions.boundedWidth - margin]);
   
-    const X_AXIS_TICKS = Math.max(1, Math.floor(width / HOURLY_SAMPLES_STEP));
+    const X_AXIS_TICKS = Math.max(1, Math.floor(dimensions.boundedWidth / HOURLY_SAMPLES_STEP));
   
     // Y-axis
     const [minY, maxY] = d3.extent(data, (d: WeatherSample) => d.temperature);
     const yScale = d3
         .scaleLinear()
-        .domain([minY!, maxY!])
+        .domain([minY ?? 0, maxY ?? 20])
         .range([height - margin, 0]);
 
     /* Add SVG */
     svg
-        .attr("width", width + margin + "px")
+        .attr("width", dimensions.boundedWidth + margin + "px")
         .attr("height", height + margin + "px")
         .append("g")
         .attr("transform", `translate(${margin}, ${margin})`);
@@ -57,9 +64,9 @@ function drawChart(
 
     const yAxis = d3
         .axisLeft(yScale)
-        .tickSize(margin - width)
+        .tickSize(margin - dimensions.boundedWidth)
         .tickSizeOuter(0)
-        .ticks(10) // UPDATE
+        .ticks(TEMPERATURE_CHART_Y_AXIS_STEPS)
         .tickPadding(10);
 
     // Add the X Axis to the chart SVG
@@ -138,12 +145,19 @@ function drawChart(
             d3.select<SVGGElement, WeatherSample>(this)
                 .style("cursor", "pointer")
                 .append("text")
+                .style('opacity', '0')
                 .attr("class", "temperature-text")
                 .text(`Temp: ${hoveredCircleData.temperature}° C`)
                 .attr("x", (d) => xScale(+d.time) - 50)
                 .attr("y", (d) => yScale(d.temperature) - 15)
+                .transition()
+                .style('opacity', '1')
+                .duration(TEMPERATURE_CHART_ANIMATION_DURATION)
         })
         .append('circle')
+        .transition()
+        .duration(TEMPERATURE_CHART_ANIMATION_DURATION)
+        .delay((d, i) => i * TEMPERATURE_CHART_ANIMATION_STAGGER)
         .attr('r', CHART_LINE_WIDTH)
         .attr('fill', 'white')
         .attr('stroke', 'black')
@@ -162,31 +176,22 @@ interface WeatherChartProps {
   xScaleDomain: number[];
   xScaleRange?: number[];
   height?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+  margin: number;
 }
 
 const WeatherChart = ({
   data,
   width,
   height = 400,
-  marginTop = 0,
-  marginRight = 0,
-  marginBottom = 0,
-  marginLeft = 0,
+  margin = 50,
 }: WeatherChartProps) => {
     const { ref, dimensions } = useChartDimensions({
         width,
         height,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginTop,
+        margin
     });
     React.useEffect(() => {
-        drawChart(ref, dimensions as AxisDimensions, data);
+        drawChart(ref, dimensions as BoundedDimensions, data);
     }, [ref]);
 
     return <svg className="text-black" id="chart-wrapper" ref={ref} />;
