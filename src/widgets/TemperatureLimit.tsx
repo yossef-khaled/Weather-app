@@ -12,11 +12,11 @@ interface TemperatureLimitProps {
 const ICON_STYLES = {
     max: {
         icon: faArrowUp,
-        color: 'text-green-800'
+        color: 'text-red-800'
     },
     min: {
         icon: faArrowDown,
-        color: 'text-red-800'
+        color: 'text-blue-800'
     }
 }
 

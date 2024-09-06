@@ -22,13 +22,13 @@ const CountryWeatherSummary = (props: WeatherSummaryProps) => {
                     temperature={props.maxTemperature}
                     scale={props.temperatureScale}
                     isMin={false}
-                    classNames="border-t-2 border-green-800 mt-2 p-0 w-1/2"
+                    classNames="border-t-2 border-red-800 mt-2 p-0 w-1/2"
                 />
                 <TemperatureLimit
                     temperature={props.minTemperature}
                     scale={props.temperatureScale}
                     isMin
-                    classNames="border-b-2 border-red-800 mt-2 p-0 w-1/2"
+                    classNames="border-b-2 border-blue-800 mt-2 p-0 w-1/2"
                 />
             </div>
         </div>
