@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect, Dispatch } from "react";
+import { useState, useRef, useEffect, Dispatch, MutableRefObject } from "react";
 import {ResizeObserver} from "@juggle/resize-observer";
 import { AxisDimensions, combineChartDimensions } from "./functions";
+import { COUNTRY_WEATHER_ELEMENTS_SCROLL_STEP } from "./consts";
 
 interface UserLocation extends GeolocationPosition {
     capital: string;
@@ -76,4 +77,38 @@ export const useDebounce = (
         return () => clearTimeout(timeoutID);
     }, [text])
 
+}
+
+export const useScrollHorizontally = (elementRef: MutableRefObject<HTMLDivElement | null>, scrollStep: number | undefined = COUNTRY_WEATHER_ELEMENTS_SCROLL_STEP) => {
+
+    const [isScrolledToMostLeft, setIsScrolledToMostLeft] = useState<boolean>();
+    const [isScrolledToMostRight, setIsScrolledToMostRight] = useState<boolean>();
+
+    const handleScrollPosition = () => {
+        const currentScrollLeft = elementRef.current?.scrollLeft ?? 0;
+        const scrollWidth = elementRef.current?.scrollWidth ?? 0;
+
+        setIsScrolledToMostLeft(!elementRef.current?.scrollLeft);
+        setIsScrolledToMostRight(Math.floor(scrollWidth - currentScrollLeft) === elementRef.current?.clientWidth);
+    }
+
+    const scroll = (direction: 'left' | 'right' = 'right') => {
+        handleScrollPosition()
+        elementRef.current?.scrollBy({
+            left: direction === 'left' ? -scrollStep : scrollStep,
+            behavior: 'smooth'
+        })
+    }
+    
+    useEffect(() => {
+        
+        handleScrollPosition()
+        elementRef.current?.addEventListener('scroll', handleScrollPosition)
+
+        return () => {
+            removeEventListener('scroll', handleScrollPosition);
+        }
+    }, [elementRef]);
+
+    return {scroll, isScrolledToMostLeft, isScrolledToMostRight}
 }
