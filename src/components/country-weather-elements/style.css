@@ -21,6 +21,6 @@
 
 @keyframes zoom-in {
     to {
-        transform: translateY(-20%) scale(130%);
+        transform: translateY(-20%) scale(110%);
     }
 }
