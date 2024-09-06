@@ -157,7 +157,7 @@ function drawChart(
         .append('circle')
         .transition()
         .duration(TEMPERATURE_CHART_ANIMATION_DURATION)
-        .delay((d, i) => i * TEMPERATURE_CHART_ANIMATION_STAGGER)
+        .delay((_, i) => i * TEMPERATURE_CHART_ANIMATION_STAGGER)
         .attr('r', CHART_LINE_WIDTH)
         .attr('fill', 'white')
         .attr('stroke', 'black')

@@ -1,11 +1,3 @@
-import { DUMMY_DATA } from "./dummy-data"
-
-type MockFetcherResponse = {
-    isLoading: boolean; 
-    data: typeof DUMMY_DATA[0] | null; 
-    error: {message: string} | null
-}
-
 export type AxisDimensions = {
     width: number;
     height: number;
@@ -67,31 +59,3 @@ export const combineChartDimensions = (dimensions: AxisDimensions) => {
         boundedWidth: Math.max(+parsedDimensions.width - (2 * parsedDimensions.margin), 0),
     }
 }
-
-// export const mockFetcher = async (url: string | null, isSuccessful: boolean = false, resTime: number = 1000) => {
-//     let res: MockFetcherResponse = {
-//         isLoading: true,
-//         error: null,
-//         data: null
-//     }
-//     if(!url) return res;
-//     setTimeout(() => {
-//         if(isSuccessful) {
-//             res = {
-//                 ...res,
-//                 isLoading: false,
-//                 data: DUMMY_DATA.find((DATA) => url.includes(DATA.url)) as typeof DUMMY_DATA[0]
-//             }
-//         }
-//         else {
-//             res = {
-//                 ...res,
-//                 isLoading: false,
-//                 error: {
-//                     message: 'Failed to get data'
-//                 }
-//             }
-//         }
-//         return res;
-//     }, resTime)
-// }
