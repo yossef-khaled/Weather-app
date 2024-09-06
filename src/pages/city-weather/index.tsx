@@ -2,7 +2,6 @@ import useSWR from 'swr';
 import WeatherSummary from '../../components/city-weather-summary';
 import { HOURLY_SAMPLES_STEP, WEATHER_SAMPLES_ENDING_HOUR, WEATHER_SAMPLES_STARTING_HOUR } from '../../utils/consts';
 import { useParams } from "react-router-dom";
-import Card from '../../widgets/Card'
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
 import CityWeatherElements from '../../components/city-weather-elements';
 import WeatherElementsShimmer from '../../components/city-weather-elements/Shimmer';
@@ -55,15 +54,18 @@ const CityWeather = () => {
                     <CityWeatherElements
                         weather={currentHourData}
                     />
-                    <Card classNames='bg-light-gray p-0rem text-center w-full weather-elements-wrapper flex flex-col'>
+                    <div className='bg-light-gray text-center w-full weather-elements-wrapper flex flex-col'>
                         <span className='font-bold m-4 text-primary-color text-xl'>Temperature throughout the day</span>
-                        <WeatherChart
-                            data={fetchRes.data.weather[0].hourly.map((hourlyObj: WeatherHourlySample) => {return {time: hourlyObj.time, temperature: parseInt(hourlyObj.tempC)}})}
-                            xScaleDomain={[WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR]}
-                            width={document.querySelector('#weather-elements-wrapper')!.clientWidth}
-                            margin={50}
-                        />
-                    </Card>
+                        {fetchRes.data.weather ?
+                            <WeatherChart
+                                data={fetchRes.data.weather[0].hourly.map((hourlyObj: WeatherHourlySample) => {return {time: hourlyObj.time, temperature: parseInt(hourlyObj.tempC)}})}
+                                xScaleDomain={[WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR]}
+                                width={document.querySelector('#weather-elements-wrapper')!.clientWidth}
+                                margin={50}
+                            />
+                            : <span className='text-primary-color'>No data was found</span>
+                        }
+                    </div>
                 </>
                 }
             </div>
