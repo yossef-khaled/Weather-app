@@ -145,6 +145,7 @@ function drawChart(
                 .style("cursor", "pointer")
                 .append("text")
                 .style('opacity', '0')
+                .style('stroke', 'blue')
                 .attr("class", "temperature-text")
                 .text(`Temp: ${hoveredCircleData.temperature}° C`)
                 .attr("x", (d) => xScale(+d.time) - 50)
