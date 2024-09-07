@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import useSWR from 'swr';
 import WeatherSummary from '../../components/city-weather-summary';
-import { HOURLY_SAMPLES_STEP, WEATHER_SAMPLES_ENDING_HOUR, WEATHER_SAMPLES_STARTING_HOUR } from '../../utils/consts';
+import { HOURLY_SAMPLES_STEP } from '../../utils/consts';
 import { useParams } from "react-router-dom";
 import { extractTimeFromLocalDateTime, fetcher } from '../../utils/functions';
 import CityWeatherElements from '../../components/city-weather-elements';
