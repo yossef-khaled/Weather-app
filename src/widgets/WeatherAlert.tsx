@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const WeatherALert = ({alertMessage}: {alertMessage: string}) => {
     return (
-        <span className='text-medium-gray'>
+        <span className='text-medium-gray mt-4'>
             <FontAwesomeIcon icon={faTriangleExclamation} className='mr-2'/>
             {alertMessage.split(',').join(', ')}.
         </span>
