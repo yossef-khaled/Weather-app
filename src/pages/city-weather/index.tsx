@@ -72,7 +72,6 @@ const CityWeather = () => {
                             {fetchRes.data.weather ?
                                 <WeatherChart
                                     data={fetchRes.data.weather[0].hourly.map((hourlyObj: WeatherHourlySample) => {return {time: hourlyObj.time, temperature: parseInt(hourlyObj.tempC)}})}
-                                    xScaleDomain={[WEATHER_SAMPLES_STARTING_HOUR, WEATHER_SAMPLES_ENDING_HOUR]}
                                     width={document.querySelector('#weather-elements-wrapper')!.clientWidth}
                                     margin={50}
                                 />

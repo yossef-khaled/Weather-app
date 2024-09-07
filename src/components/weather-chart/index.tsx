@@ -173,8 +173,6 @@ type WeatherSample = {
 interface WeatherChartProps {
   data: WeatherSample[];
   width: number;
-  xScaleDomain: number[];
-  xScaleRange?: number[];
   height?: number;
   margin: number;
 }
