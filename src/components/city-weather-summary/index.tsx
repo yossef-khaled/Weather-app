@@ -2,7 +2,7 @@ import Card from "../../widgets/Card";
 import CityName from "../../widgets/CityName";
 import TemperatureDetails from "../TemperatureDetails";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faSun, faMoon} from '@fortawesome/free-solid-svg-icons'
+import {faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 
 export interface WeatherSummaryProps {
     city: string;
